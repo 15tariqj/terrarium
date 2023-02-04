@@ -22,5 +22,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/at-risk-patients")
+def get_at_risk_patient():
+    return {"Hello": "World"}
+
+@app.post("/patient-data")
+def write_patient_data():
+    return {"Hello": "World"}
+
 # Connecting to database
 influxdb_client.check_connection()
