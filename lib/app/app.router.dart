@@ -52,8 +52,11 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.HomeView: (data) {
+      final args = data.getArgs<HomeViewArguments>(
+        orElse: () => const HomeViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const _i3.HomeView(),
+        builder: (context) => _i3.HomeView(key: args.key),
         settings: data,
       );
     },
@@ -71,6 +74,12 @@ class StackedRouter extends _i1.RouterBase {
   List<_i1.RouteDef> get routes => _routes;
   @override
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
+}
+
+class HomeViewArguments {
+  const HomeViewArguments({this.key});
+
+  final _i5.Key? key;
 }
 
 class PatientWarningViewArguments {
@@ -99,14 +108,16 @@ extension NavigatorStateExtension on _i6.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToHomeView([
+  Future<dynamic> navigateToHomeView({
+    _i5.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.homeView,
+        arguments: HomeViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -144,14 +155,16 @@ extension NavigatorStateExtension on _i6.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithHomeView([
+  Future<dynamic> replaceWithHomeView({
+    _i5.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.homeView,
+        arguments: HomeViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

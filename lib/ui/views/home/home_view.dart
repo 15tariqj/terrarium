@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:stacked/stacked.dart';
 import 'package:terrarium/models/patient.dart';
 import 'package:terrarium/ui/common/app_colors.dart';
 import 'package:terrarium/ui/common/ui_helpers.dart';
 import 'package:terrarium/ui/views/patient_warning/patient_warning_view.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'home_viewmodel.dart';
 
 class HomeView extends StackedView<HomeViewModel> {
-  const HomeView({Key? key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
+  int currentScrollIndex = 0;
 
   @override
   Widget builder(
@@ -230,41 +236,92 @@ class HomeView extends StackedView<HomeViewModel> {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Patient Warnings",
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 32,
-                            ),
-                          ),
-                        ],
-                      ),
                       Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        height: 500,
-                        width: 550,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 16,
-                            top: 16,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              for (Patient patient
-                                  in viewModel.patientsWithWarnings)
-                                PatientWarningView(id: patient.id),
-                            ],
-                          ),
+                        width: screenWidth(context) - 239,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Patient Warnings",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 32,
+                              ),
+                            ),
+                            Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    currentScrollIndex -= 1;
+                                    if (currentScrollIndex < 0) {
+                                      currentScrollIndex = 0;
+                                    }
+                                    itemScrollController.scrollTo(
+                                      index: currentScrollIndex,
+                                      duration: Duration(
+                                        milliseconds: 750,
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 30),
+                                    child: Container(
+                                      child: Icon(
+                                        Icons.chevron_left,
+                                        size: 42,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    currentScrollIndex += 1;
+                                    if (currentScrollIndex ==
+                                        viewModel.patientsWithWarnings.length -
+                                            1) {
+                                      currentScrollIndex = 0;
+                                    }
+                                    itemScrollController.scrollTo(
+                                      index: currentScrollIndex,
+                                      duration: Duration(
+                                        milliseconds: 750,
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 30),
+                                    child: Container(
+                                      child: Icon(
+                                        Icons.chevron_right,
+                                        size: 42,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
                         ),
                       ),
+                      SizedBox(height: 20),
+                      Container(
+                        height: 450,
+                        width: screenWidth(context) - 239,
+                        child: ScrollablePositionedList.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: viewModel.patientsWithWarnings.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              PatientWarningView(
+                                  id: viewModel.patientsWithWarnings[index].id),
+                          itemScrollController: itemScrollController,
+                          itemPositionsListener: itemPositionsListener,
+                        ),
+                      )
                     ],
                   ),
                 ],

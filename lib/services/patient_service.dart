@@ -22,6 +22,16 @@ class PatientService with ListenableServiceMixin {
       respiratoryRate: 34,
       spO2: 91,
       temperature: 38,
+    ),
+    Patient(
+      firstName: "Mary",
+      lastName: "Jane",
+      id: 123458,
+      age: 57,
+      heartRate: 71,
+      respiratoryRate: 30,
+      spO2: 90,
+      temperature: 38,
     )
   ];
 
