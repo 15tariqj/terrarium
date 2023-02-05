@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:terrarium/models/patient.dart';
 import 'package:terrarium/ui/common/app_colors.dart';
 import 'package:terrarium/ui/common/ui_helpers.dart';
+import 'package:terrarium/ui/views/patient_actions/patient_actions_view.dart';
 import 'package:terrarium/ui/views/patient_warning/patient_warning_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -24,6 +25,15 @@ class HomeView extends StackedView<HomeViewModel> {
   ) {
     return Scaffold(
       backgroundColor: kBackgroundColour,
+      endDrawer: Container(
+        width: 425,
+        child: Drawer(
+          child: PatientActionsView(
+            id: viewModel.currentPatientID,
+          ),
+          backgroundColor: kPatientSheetBackgroundColour,
+        ),
+      ),
       body: SafeArea(
         child: Row(
           children: [
@@ -316,8 +326,16 @@ class HomeView extends StackedView<HomeViewModel> {
                           scrollDirection: Axis.horizontal,
                           itemCount: viewModel.patientsWithWarnings.length,
                           itemBuilder: (BuildContext context, int index) =>
-                              PatientWarningView(
-                                  id: viewModel.patientsWithWarnings[index].id),
+                              GestureDetector(
+                            onTap: () {
+                              viewModel.currentPatientID =
+                                  viewModel.patientsWithWarnings[index].id;
+                              viewModel.notifyListeners();
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            child: PatientWarningView(
+                                id: viewModel.patientsWithWarnings[index].id),
+                          ),
                           itemScrollController: itemScrollController,
                           itemPositionsListener: itemPositionsListener,
                         ),

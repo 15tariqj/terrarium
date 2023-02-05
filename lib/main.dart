@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Terrarium',
       theme: Theme.of(context).copyWith(
         textTheme: Theme.of(context).textTheme.apply(

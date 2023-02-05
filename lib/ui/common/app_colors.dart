@@ -11,3 +11,6 @@ const Color kNonWarningMetricColour = Color(0xFFD4FDD3);
 const Color kNonWarningMetricIconColour = Color(0xFF608B5E);
 const Color kWarningMetricColour = Color(0xFFFAE4CF);
 const Color kWarningMetricIconColour = Color(0xFF98795E);
+const Color kPatientSheetBackgroundColour = Color(0xFF344451);
+const Color kDarkCallButtonColour = Color(0xFF17242C);
+const Color kSheetIDColour = Color(0xFFCDCCF4);
