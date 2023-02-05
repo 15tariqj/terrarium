@@ -16,6 +16,10 @@ async def connect_to_influxDB() -> None:
     influxdb_client.initialise_write_api(write_options=SYNCHRONOUS)
     influxdb_client.initialise_query_api()
 
+    influxdb_client.check_connection()
+    influxdb_client.check_query("patientData")
+    influxdb_client.check_write("patientData")
+
     logger.info("Connected to influxDB")
 
 

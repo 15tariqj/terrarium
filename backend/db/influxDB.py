@@ -51,20 +51,21 @@ class InfluxDbManager:
         print("ok")
 
     def check_query(self, bucket):
+
         try:
             self.influxDbClient.query_api().query(f"from(bucket:\"{bucket}\") |> range(start: -1m) |> limit(n:1)",
-                                                  self.settings["ORG"])
+                                                  self.settings.ORG)
         except ApiException as e:
             # missing credentials
             if e.status == 404:
                 raise Exception(f"The specified token doesn't have sufficient credentials to read from '{bucket}' "
                                 f"or specified bucket doesn't exists.") from e
             raise
-        print("ok")
+        print("QueryAPI ok")
 
     def check_write(self, bucket):
         try:
-            self.influxDbClient.write_api(write_options=SYNCHRONOUS).write(bucket, self.settings["ORG"], b"")
+            self.influxDbClient.write_api(write_options=SYNCHRONOUS).write(bucket, self.settings.ORG, b"")
         except ApiException as e:
             # bucket does not exist
             if e.status == 404:
@@ -76,34 +77,23 @@ class InfluxDbManager:
             # 400 (BadRequest) caused by empty LineProtocol
             if e.status != 400:
                 raise
-        print("ok")
+        print("WriteAPI ok")
 
     # Write and read functions
     def write_sensor_data_to_db(self, payload):
-        p = influxdb_client \
-            .Point("sensor_reading") \
-            .time(datetime.fromtimestamp(payload['timestamp'] / 1000000)) \
-            .field("patientId", payload['patientId']) \
-            .field("vo2max_ml_per_min_per_kg", payload['vo2max_ml_per_min_per_kg']) \
-            .field("saturation_samples", payload['saturation_samples']) \
-            .field("vo2_samples", payload['vo2_samples']) \
-            .field("avg_saturation_percentage", payload['avg_saturation_percentage']) \
-            .field("temperature", payload['temperature']) \
-            .field("respiratory_rate", payload['respiratory_rate']) \
-            .field("avg_hr_bpm", payload['avg_hr_bpm']) \
-            .field("max_hr_bpm", payload['max_hr_bpm'])
-
-        self.write_api.write(
-            bucket=self.settings["BUCKET_NAME"],
-            org=self.settings["ORG"],
-            record_measurement_key=self.settings["MEASUREMENT_NAME"],
-            record=p
+        return self.write_api.write(
+            bucket=self.settings.BUCKET_NAME,
+            org=self.settings.ORG,
+            record_measurement_key=self.settings.MEASUREMENT_NAME,
+            record=payload
         )
 
     def query_sensor_data(self, bucket, time_interval, measurement, field):
         # Query database to get all the patients data
         query = f'from(bucket:"{bucket}") \
-                  |> range(start: {time_interval})'
+                  |> range(start: {time_interval}) \
+                  |> filter(fn:(r) => r._measurement == "{measurement}") \
+                  |> filter(fn:(r) => r._field == "{field}")'
 
         tables = self.query_api.query(org=self.settings.ORG, query=query)
 

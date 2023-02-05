@@ -6,29 +6,23 @@ from core.events import create_start_app_handler
 from api.routes.api import router as api_router
 
 
-def create_application() -> FastAPI:
-    settings = get_settings()
+settings = get_settings()
 
-    app = FastAPI(
-        title=settings.APP_NAME
-    )
-    # Configuring CORS policies
-    origins = ["*"]
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+app = FastAPI(
+    title=settings.APP_NAME
+)
+# Configuring CORS policies
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    # Instantiate backend routes
-    app.include_router(api_router)
+# Instantiate backend routes
+app.include_router(api_router)
 
-    # Event handlers
-    app.add_event_handler("startup", create_start_app_handler(app))
-
-    return app
-
-
-session = create_application()
+# Event handlers
+app.add_event_handler("startup", create_start_app_handler(app))
