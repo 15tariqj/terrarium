@@ -12,7 +12,7 @@ class StartupViewModel extends BaseViewModel {
   Future runStartupLogic() async {
     // TODO: UNCOMMENT WHEN YOU WANT DATA FROM REQUESTS
     //await _patientService.initialise();
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 10));
 
     // This is where you can make decisions on where your app should navigate when
     // you have custom startup logic
