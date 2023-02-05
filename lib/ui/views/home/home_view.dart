@@ -39,12 +39,16 @@ class HomeView extends StackedView<HomeViewModel> {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Welcome, ${viewModel.firstName}",
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 32,
+                  OpacityAnimation(
+                    startInterval: 0.1,
+                    endInterval: 0.6,
+                    child: Text(
+                      "Welcome, ${viewModel.firstName}",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 32,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -275,12 +279,17 @@ class HomeView extends StackedView<HomeViewModel> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Patient Warnings",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 32,
+                            OpacityAnimation(
+                              startInterval: 0.5,
+                              endInterval: 1,
+                              duration: 2500,
+                              child: Text(
+                                "Patient Warnings",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 32,
+                                ),
                               ),
                             ),
                             Stack(

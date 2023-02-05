@@ -17,4 +17,5 @@ class HomeViewModel extends ReactiveViewModel {
   initialize() {
     patientsWithWarnings = patientService.patientsWithWarnings;
   }
+  
 }

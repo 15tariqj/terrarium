@@ -10,6 +10,8 @@ class PatientWarningView extends StackedView<PatientWarningViewModel> {
 
   const PatientWarningView({Key? key, required this.id}) : super(key: key);
 
+
+
   @override
   Widget builder(
     BuildContext context,
@@ -17,9 +19,11 @@ class PatientWarningView extends StackedView<PatientWarningViewModel> {
     Widget? child,
   ) {
     return SlideAnimation(
+      yOffset: 0.1,
 
       startInterval: 0.7,
       endInterval: 1,
+      duration: 2200,
       child: Padding(
         padding: const EdgeInsets.only(right: 16),
         child: Container(
