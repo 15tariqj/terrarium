@@ -13,6 +13,7 @@ def create_start_app_handler(app: FastAPI) -> Callable:
 
         await connect_to_influxDB()
 
+
     return start_app
 
 

@@ -5,6 +5,13 @@ from loguru import logger
 from core.settings.settings import get_settings
 
 import influxdb_client
+import json
+
+# In order to help with mocked data, for demostration, the time is locked to when
+# it was used for testing
+
+START_TIME = "2023-02-04T00:00:00Z"
+STOP_TIME = "2023-02-04T04:30:00Z"
 
 
 class InfluxDbManager:
@@ -80,22 +87,28 @@ class InfluxDbManager:
         print("WriteAPI ok")
 
     # Write and read functions
-    def write_sensor_data_to_db(self, payload):
+    def write_sensor_data_to_db(self, payload, measurement_name):
         return self.write_api.write(
             bucket=self.settings.BUCKET_NAME,
             org=self.settings.ORG,
-            record_measurement_key=self.settings.MEASUREMENT_NAME,
+            record_measurement_key=measurement_name,
             record=payload
         )
 
-    def query_sensor_data(self, bucket, time_interval, measurement, field):
+    def query_sensor_data(self, bucket, time_interval, measurement):
         # Query database to get all the patients data
         query = f'from(bucket:"{bucket}") \
                   |> range(start: {time_interval}) \
-                  |> filter(fn:(r) => r._measurement == "{measurement}") \
-                  |> filter(fn:(r) => r._field == "{field}")'
+                  |> filter(fn:(r) => r._measurement == "{measurement}")'
 
         tables = self.query_api.query(org=self.settings.ORG, query=query)
+        jsonTables = json.loads(tables.to_json(indent=5))
 
-        # Serialize to JSON
-        return tables.to_json(indent=5)
+        atRisk = {}
+        for entry in jsonTables:
+            if entry['patientId'] not in atRisk:
+                atRisk[entry['patientId']] = {entry['_field']: entry['_value']}
+            else:
+                atRisk[entry['patientId']].update({entry['_field']: entry['_value']})
+
+        return atRisk
