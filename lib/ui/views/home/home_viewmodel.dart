@@ -13,6 +13,7 @@ class HomeViewModel extends ReactiveViewModel {
   int changeInPatientWarnings = 2;
   int actionsNeeded = 5;
   late List<Patient> patientsWithWarnings;
+  int currentPatientID = 123456;
 
   initialize() {
     patientsWithWarnings = patientService.patientsWithWarnings;
