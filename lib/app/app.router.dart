@@ -5,10 +5,13 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flutter/material.dart' as _i5;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i4;
+import 'package:stacked_services/stacked_services.dart' as _i6;
 import 'package:terrarium/ui/views/home/home_view.dart' as _i3;
+import 'package:terrarium/ui/views/patient_warning/patient_warning_view.dart'
+    as _i4;
 import 'package:terrarium/ui/views/startup/startup_view.dart' as _i2;
 
 class Routes {
@@ -16,9 +19,12 @@ class Routes {
 
   static const homeView = '/home-view';
 
+  static const patientWarningView = '/patient-warning-view';
+
   static const all = <String>{
     startupView,
     homeView,
+    patientWarningView,
   };
 }
 
@@ -31,6 +37,10 @@ class StackedRouter extends _i1.RouterBase {
     _i1.RouteDef(
       Routes.homeView,
       page: _i3.HomeView,
+    ),
+    _i1.RouteDef(
+      Routes.patientWarningView,
+      page: _i4.PatientWarningView,
     ),
   ];
 
@@ -47,6 +57,14 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
+    _i4.PatientWarningView: (data) {
+      final args = data.getArgs<PatientWarningViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) =>
+            _i4.PatientWarningView(key: args.key, id: args.id),
+        settings: data,
+      );
+    },
   };
 
   @override
@@ -55,7 +73,18 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
-extension NavigatorStateExtension on _i4.NavigationService {
+class PatientWarningViewArguments {
+  const PatientWarningViewArguments({
+    this.key,
+    required this.id,
+  });
+
+  final _i5.Key? key;
+
+  final int id;
+}
+
+extension NavigatorStateExtension on _i6.NavigationService {
   Future<dynamic> navigateToStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -84,6 +113,23 @@ extension NavigatorStateExtension on _i4.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToPatientWarningView({
+    _i5.Key? key,
+    required int id,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.patientWarningView,
+        arguments: PatientWarningViewArguments(key: key, id: id),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -106,6 +152,23 @@ extension NavigatorStateExtension on _i4.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.homeView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithPatientWarningView({
+    _i5.Key? key,
+    required int id,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.patientWarningView,
+        arguments: PatientWarningViewArguments(key: key, id: id),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

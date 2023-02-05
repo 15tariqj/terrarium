@@ -9,6 +9,8 @@ import 'dart:ui' as _i5;
 import 'package:flutter/material.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i2;
+import 'package:terrarium/models/patient.dart' as _i7;
+import 'package:terrarium/services/patient_service.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -618,6 +620,74 @@ class MockDialogService extends _i1.Mock implements _i2.DialogService {
         Invocation.method(
           #completeDialog,
           [response],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [PatientService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPatientService extends _i1.Mock implements _i6.PatientService {
+  @override
+  List<_i7.Patient> get patientsWithWarnings => (super.noSuchMethod(
+        Invocation.getter(#patientsWithWarnings),
+        returnValue: <_i7.Patient>[],
+        returnValueForMissingStub: <_i7.Patient>[],
+      ) as List<_i7.Patient>);
+  @override
+  set patientsWithWarnings(List<_i7.Patient>? _patientsWithWarnings) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #patientsWithWarnings,
+          _patientsWithWarnings,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  int get listenersCount => (super.noSuchMethod(
+        Invocation.getter(#listenersCount),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+  @override
+  _i7.Patient? getPatientWithWarningFromID(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getPatientWithWarningFromID,
+          [id],
+        ),
+        returnValueForMissingStub: null,
+      ) as _i7.Patient?);
+  @override
+  void listenToReactiveValues(List<dynamic>? reactiveValues) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #listenToReactiveValues,
+          [reactiveValues],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void addListener(void Function()? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void removeListener(void Function()? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
         ),
         returnValueForMissingStub: null,
       );
