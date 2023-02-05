@@ -27,7 +27,7 @@ class PatientActionsView extends StackedView<PatientActionsViewModel> {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.close_rounded,
                   color: Colors.white,
                   size: 44,
@@ -44,7 +44,7 @@ class PatientActionsView extends StackedView<PatientActionsViewModel> {
                 children: [
                   Text(
                     "${viewModel.patient.firstName} ${viewModel.patient.lastName}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
                       fontSize: 32,
@@ -62,7 +62,7 @@ class PatientActionsView extends StackedView<PatientActionsViewModel> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Padding(
@@ -161,7 +161,7 @@ class PatientActionsView extends StackedView<PatientActionsViewModel> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -268,8 +268,8 @@ class PatientActionsView extends StackedView<PatientActionsViewModel> {
               color: kPatientWarningsIncreaseTextColour,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 16),
+            child: const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 16),
               child: Text(
                 "ePrescribe Prophylaxis",
                 style: TextStyle(
