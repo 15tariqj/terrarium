@@ -6,6 +6,6 @@ from db.dependencies import get_influxDb
 router = APIRouter()
 
 
-@router.get("/patient-data/")
+@router.post("/patient-data/")
 async def write_to_influxDb():
    ...
