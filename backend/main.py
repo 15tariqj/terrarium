@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from influxDB import InfluxDbManager
+from db.influxDB import InfluxDbManager
 import influxdb_client as influxd
 from datetime import datetime
 
 BUCKET_NAME="patientData"
 MEASUREMENT_NAME=""
 ORG="terrarium"
+QUERY_TIME_INTERVAL=""
+
 influxdb_client = InfluxDbManager()
 
 
@@ -26,7 +27,14 @@ app.add_middleware(
 
 @app.get("/at-risk-patients")
 def get_at_risk_patient():
-    return {"Hello": "World"}
+    # Query database to get all the patients data
+    tables = influxdb_client.query_api().query(f'from(bucket:{BUCKET_NAME}) |> range(start: -10m)')
+
+    # Serialize to JSON
+    output = tables.to_json(indent=5)
+
+    # pass into function to calculate the most at risk patients
+    return output
 
 '''
 Assuming the payload sample is the following json format:
@@ -34,9 +42,7 @@ Assuming the payload sample is the following json format:
 {
     'timestamp': ,
     'patientId': ,
-    'vo2max_ml_per_min_per_kg': ,
     'saturation_samples': ,
-    'vo2_samples': ,
     'avg_saturation_percentage': ,
     'temperature': ,
     'respiratory_rate': ,
