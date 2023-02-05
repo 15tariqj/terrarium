@@ -51,26 +51,25 @@ def write_patient_data(payload):
     """
     # TODO: Add in exception and logging
 
-    for i in range(10):
-        p = influxd \
-            .Point("sensor_reading") \
-            .time(datetime.fromtimestamp(payload['timestamp'] / 1000000)) \
-            .field("patientId", payload['patientId'] ) \
-            .field("vo2max_ml_per_min_per_kg", payload['vo2max_ml_per_min_per_kg'] ) \
-            .field("saturation_samples", payload['saturation_samples'] ) \
-            .field("vo2_samples", payload['vo2_samples'] ) \
-            .field("avg_saturation_percentage", payload['avg_saturation_percentage'] ) \
-            .field("temperature", payload['temperature'] ) \
-            .field("respiratory_rate", payload['respiratory_rate'] ) \
-            .field("avg_hr_bpm", payload['avg_hr_bpm'] ) \
-            .field("max_hr_bpm", payload['max_hr_bpm'])
+    p = influxd \
+        .Point("sensor_reading") \
+        .time(datetime.fromtimestamp(payload['timestamp'] / 1000000)) \
+        .field("patientId", payload['patientId'] ) \
+        .field("vo2max_ml_per_min_per_kg", payload['vo2max_ml_per_min_per_kg'] ) \
+        .field("saturation_samples", payload['saturation_samples'] ) \
+        .field("vo2_samples", payload['vo2_samples'] ) \
+        .field("avg_saturation_percentage", payload['avg_saturation_percentage'] ) \
+        .field("temperature", payload['temperature'] ) \
+        .field("respiratory_rate", payload['respiratory_rate'] ) \
+        .field("avg_hr_bpm", payload['avg_hr_bpm'] ) \
+        .field("max_hr_bpm", payload['max_hr_bpm'])
 
-        influxdb_client.write_api.write(
-            bucket=BUCKET_NAME,
-            org=ORG,
-            record_measurement_key=MEASUREMENT_NAME,
-            record=p
-        )
+    influxdb_client.write_api.write(
+        bucket=BUCKET_NAME,
+        org=ORG,
+        record_measurement_key=MEASUREMENT_NAME,
+        record=p
+    )
 
 
 # Connecting to database
